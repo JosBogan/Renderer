@@ -1,4 +1,4 @@
-from .vectors import vectorFromPoints, Vector
+from .vectors import vectorFromPoints, Vector, normaliseVector
 from .point import Point
 
 
@@ -11,6 +11,7 @@ class Triangle():
         self.vAC = vectorFromPoints(a, c)
         self.vBC = vectorFromPoints(b, c)
         self.normal = self.calculateNormalSelf()
+        self.normalisedNormal = normaliseVector(self.normal)
         self.dp = self.calculateDotProductSelf()
 
 

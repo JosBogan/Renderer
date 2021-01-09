@@ -1,5 +1,6 @@
-from vectors import vectorFromPoints, Vector
-from point import Point
+from .vectors import vectorFromPoints, Vector
+from .point import Point
+
 
 class Triangle():
     def __init__(self, a, b, c):
@@ -42,10 +43,10 @@ def calculateNormal(triangle):
 
     return calculateCrossProduct(triangle.vAB, triangle.vAC)
 
-a = Point(2, 5, 3)
-b = Point(1, 3, 7)
-c = Point(8, 1, 4)
+# a = Point(2, 5, 3)
+# b = Point(1, 3, 7)
+# c = Point(8, 1, 4)
 
-myTriangle = Triangle(a, b, c)
+# myTriangle = Triangle(a, b, c)
 
-print(myTriangle)
+# print(myTriangle)

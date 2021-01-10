@@ -51,7 +51,7 @@ ray3 = Ray(Vector(-4, 3, 2), Vector(-3, 3, 2), 10)
 
 ray3.calculateIntersection(triangles)
 
-print(ray3.getHit())
+# print(ray3.getHit())
 
 # ! Test 4 - didHit triangle?
 

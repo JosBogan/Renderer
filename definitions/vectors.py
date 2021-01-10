@@ -51,3 +51,6 @@ def vectorFromPoints(a, b):
     y = b.y - a.y
     z = b.z - a.z
     return Vector(x, y, z)
+
+def vectorNegative(a):
+    return Vector(-a.x, -a.y, -a.z)

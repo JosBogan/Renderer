@@ -1,5 +1,5 @@
 from .triangle import calculateDotProduct, calculateCrossProduct
-from .vectors import normaliseVector, Vector, vectorSubtract, vectorMultiply, vectorAdd, vectorFromPoints
+from .vectors import normaliseVector, Vector, vectorSubtract, vectorMultiply, vectorAdd, vectorFromPoints, vectorDivide, vectorNegative
 
 class Ray():
     def __init__(self, point, direction, distance):
@@ -22,19 +22,51 @@ class Ray():
 
         return vectorAdd(self.point, vectorMultiply(self.direction, t))
 
+    def calculateProjection(self, projectFrom, projectTo):
+
+        topHalf = calculateDotProduct(projectFrom, projectTo)
+        bottomHalf = calculateDotProduct(projectFrom, projectFrom)
+
+        coefficient = topHalf / bottomHalf
+
+        # print(f'coefficient:{coefficient}')
+
+
+        intersect = vectorMultiply(projectTo, coefficient)
+
+        # print(f'intersect{intersect}')
+
+        vector = vectorFromPoints(projectFrom, intersect)
+
+        # print(f'vectorV:{vector}')
+
+
+        return vector
+
+
+    def calculateBarycentricCoordinates(self, a, i, projectFrom, projectTo):
+
+        print(projectFrom)
+        print(projectTo)
+
+        v = self.calculateProjection(projectFrom, projectTo)
+    
+
+        topHalf = calculateDotProduct(v, vectorFromPoints(a, i))
+        bottomHalf = calculateDotProduct(v, projectTo)
+
+        coords = 1 - (topHalf - bottomHalf)
+
+        print(coords)
+        # return coords
+
+
     def checkInTriangle(self, hit, triangle): # ! FIX ME!!
 
-        vAB = vectorFromPoints(triangle.b, triangle.a)
-        vBC = vectorFromPoints(triangle.c, triangle.b)
-        vCA = vectorFromPoints(triangle.a, triangle.c)
+        vBA = vectorFromPoints(triangle.b, triangle.a)
+        vBC = vectorFromPoints(triangle.b, triangle.c)
 
-        if calculateDotProduct(calculateCrossProduct(vAB, vectorSubtract(hit, triangle.a)), triangle.normalisedNormal) >= 0:
-            return False
-        if calculateDotProduct(calculateCrossProduct(vBC, vectorSubtract(hit, triangle.a)), triangle.normalisedNormal) >= 0:
-            return False
-        if calculateDotProduct(calculateCrossProduct(vCA, vectorSubtract(hit, triangle.a)), triangle.normalisedNormal) >= 0:
-            return False
-        return True
+        self.calculateBarycentricCoordinates(triangle.a, hit, vBA, vBC)
 
 
     def calculateIntersection(self, objects):
@@ -42,20 +74,10 @@ class Ray():
 
             self.hit = self.calculatePlaneIntersection(x)
 
-            did_hit = self.checkInTriangle(self.hit, x)
+            self.checkInTriangle(self.hit, x)
 
-            print(did_hit)
+            # print(self.hit)
 
-            # d = calculateDotProduct(x.normalisedNormal, x.a)
-
-
-            # topHalf = d - calculateDotProduct(x.normalisedNormal, self.point)
-            # bottomHalf = calculateDotProduct(x.normalisedNormal, self.direction)
-            
-            # t = topHalf / bottomHalf
-
-
-            # self.hit = vectorAdd(self.point, vectorMultiply(self.direction, t))
 
     def getHit(self):
         return self.hit

@@ -29,16 +29,10 @@ class Ray():
 
         coefficient = topHalf / bottomHalf
 
-        # print(f'coefficient:{coefficient}')
-
-
         intersect = vectorMultiply(projectTo, coefficient)
 
-        # print(f'intersect{intersect}')
 
         vector = vectorFromPoints(projectFrom, intersect)
-
-        # print(f'vectorV:{vector}')
 
 
         return vector
@@ -46,27 +40,37 @@ class Ray():
 
     def calculateBarycentricCoordinates(self, a, i, projectFrom, projectTo):
 
-        print(projectFrom)
-        print(projectTo)
-
         v = self.calculateProjection(projectFrom, projectTo)
-    
+        vAI = vectorFromPoints(a, i)
 
-        topHalf = calculateDotProduct(v, vectorFromPoints(a, i))
-        bottomHalf = calculateDotProduct(v, projectTo)
+        topHalf = calculateDotProduct(v, vAI)
 
-        coords = 1 - (topHalf - bottomHalf)
+        
+        bottomHalf = calculateDotProduct(v, vectorNegative(projectFrom))
+        
 
-        print(coords)
-        # return coords
+        coord = 1 - (topHalf / bottomHalf)
 
+        return coord
 
     def checkInTriangle(self, hit, triangle): # ! FIX ME!!
 
         vBA = vectorFromPoints(triangle.b, triangle.a)
         vBC = vectorFromPoints(triangle.b, triangle.c)
 
-        self.calculateBarycentricCoordinates(triangle.a, hit, vBA, vBC)
+        vCB = vectorFromPoints(triangle.c, triangle.b)
+        vCA = vectorFromPoints(triangle.c, triangle.a)
+
+        vAC = vectorFromPoints(triangle.a, triangle.c)
+        vAB = vectorFromPoints(triangle.a, triangle.b)
+
+        a = self.calculateBarycentricCoordinates(triangle.a, hit, vBA, vBC)
+
+        b = self.calculateBarycentricCoordinates(triangle.b, hit, vCB, vCA)
+
+        c = self.calculateBarycentricCoordinates(triangle.b, hit, vAC, vAB)
+
+        print(a, b, c)
 
 
     def calculateIntersection(self, objects):
